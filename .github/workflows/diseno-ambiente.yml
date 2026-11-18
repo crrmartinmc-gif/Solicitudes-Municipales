@@ -1,0 +1,26 @@
+name: Validar diseño Ambiente Lomas
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ambiente-lomas-theme.css'
+      - 'instalar-diseno-ambiente.ps1'
+      - 'tests/test-diseno-ambiente.js'
+      - '.github/workflows/diseno-ambiente.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar estilos e integridad funcional
+        run: node tests/test-diseno-ambiente.js
+      - name: Validar sintaxis PowerShell
+        shell: pwsh
+        run: |
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'instalar-diseno-ambiente.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
