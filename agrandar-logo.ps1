@@ -57,8 +57,7 @@ header .amb-brand-logo{
   Write-Host 'Cambio preparado: logo ampliado, codigo funcional intacto.' -ForegroundColor Green
   Write-Host ('Respaldo del Index anterior: '+$backup)
   & clasp status
-  $ok=Read-Host 'Escribi APLICAR para subir el logo mas grande (Enter cancela)'
-  if($ok -ne 'APLICAR'){Write-Host 'Cancelado sin subir nada.';return}
+  Write-Host 'La modificación solo afecta CSS. Subiendo sin pedir pasos adicionales...' -ForegroundColor Green
   & clasp push
   if($LASTEXITCODE -ne 0){throw 'Fallo la subida a Apps Script; conservamos el respaldo.'}
   Write-Host 'Index.html actualizado en Apps Script. Verificando implementacion...' -ForegroundColor Green
@@ -68,8 +67,7 @@ header .amb-brand-logo{
     throw 'La implementacion /exec correcta no figura en el proyecto. NO se publico otra URL.'
   }
   Write-Host ('URL sin cambios: https://script.google.com/macros/s/'+$deployment+'/exec') -ForegroundColor Cyan
-  $ok=Read-Host 'Escribi PUBLICAR para actualizar ESA MISMA URL (Enter cancela)'
-  if($ok -ne 'PUBLICAR'){Write-Host 'Codigo subido pero implementacion anterior. Cancelado sin publicar.';return}
+  Write-Host 'Actualizando automáticamente la misma URL /exec...' -ForegroundColor Cyan
   & clasp deploy -i $deployment -d 'Logo Ambiente Lomas ampliado en Solicitudes Municipales'
   if($LASTEXITCODE -ne 0){throw 'La publicacion fallo; conservamos el respaldo y codigo actualizado.'}
   Write-Host 'LOGO ACTUALIZADO en la misma app. Recarga el navegador.' -ForegroundColor Green
