@@ -7,6 +7,8 @@ on:
       - 'instalar-diseno-ambiente.ps1'
       - 'agrandar-logo.ps1'
       - 'encuadrar-logo.ps1'
+      - 'aplicar-logo-oficial.ps1'
+      - 'assets/logo-ambiente-lomas-horizontal.png'
       - 'tests/test-diseno-ambiente.js'
       - '.github/workflows/diseno-ambiente.yml'
   workflow_dispatch:
@@ -31,4 +33,7 @@ jobs:
           if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
           $tokens=$null; $errors=$null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'encuadrar-logo.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'aplicar-logo-oficial.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
           if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
