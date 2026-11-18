@@ -1,0 +1,18 @@
+const assert=require('assert'),fs=require('fs');
+const p=fs.readFileSync('instalar-icono-solicitudes.ps1','utf8');
+let checks=0;
+const ok=(c,m)=>{assert.ok(c,m);checks++};
+const id='AKfycbwyh-a1jGYe0ZpRu9IjImgMwVUoygIeZz0B-C5Cf3MWSS1vyiYCk3r9TgsEvQ_RlQ_y';
+ok(p.includes(id),'implementación real de Solicitudes Municipales');
+ok(p.includes('1BcZCsDSmp-wU4gHPfeA24u7VqzyUxXEnI_9IEzDwew1pqRMXm8b5wV9a'),'ID real de proyecto');
+ok(p.includes('assets/icono-solicitudes-192.png'),'enlace directo del icono publicado');
+ok(p.includes('setFaviconUrl'),'usa API oficial de Apps Script para favicon');
+ok(p.includes('clasp clone $scriptId'),'trabaja con estado actual, no una copia vieja');
+ok(p.includes('RESPALDO-SOLICITUDES-ICONO'),'respaldo antes del cambio');
+ok(p.includes('if($newSource.Replace($updated,$expected) -cne $source)'),'verifica cambio aislado');
+ok(p.includes('clasp deploy -i $deploymentId'),'conserva URL existente');
+ok(!p.includes('clasp deploy --description'),'no crea deployment diferente');
+ok(!p.includes('SOL_CLAVES_RESETEADAS_EN'),'no toca restablecimiento');
+ok(!p.includes('SpreadsheetApp.'),'no toca hojas ni solicitudes');
+ok(!p.includes('setFaviconUrl('+"\"data:image"),'usa icono público y no data URI');
+console.log('OK: '+checks+' controles del instalador de icono sin alterar servicios.');
