@@ -4,7 +4,7 @@
 $ErrorActionPreference='Stop'
 $scriptId='1BcZCsDSmp-wU4gHPfeA24u7VqzyUxXEnI_9IEzDwew1pqRMXm8b5wV9a'
 $cssUrl='https://raw.githubusercontent.com/crrmartinmc-gif/Solicitudes-Municipales/main/ambiente-lomas-theme.css'
-$logo='https://crrmartinmc-gif.github.io/Logistica-Ambiental/ambiente-lomas.png'
+$logo='https://raw.githubusercontent.com/crrmartinmc-gif/Solicitudes-Municipales/main/assets/logo-ambiente-lomas-horizontal.png'
 $stamp=Get-Date -Format 'yyyyMMdd-HHmmss'
 $work=Join-Path $env:USERPROFILE ('Documents\Solicitudes-Estilo-'+$stamp)
 $backup=Join-Path $env:USERPROFILE ('Documents\RESPALDO-SOLICITUDES-DISENO-'+$stamp)
