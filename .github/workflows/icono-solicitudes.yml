@@ -1,0 +1,39 @@
+name: Validar icono Solicitudes
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'instalar-icono-solicitudes.ps1'
+      - 'tests/test-icono-solicitudes.js'
+      - '.github/workflows/icono-solicitudes.yml'
+      - 'assets/icono-solicitudes-192.png'
+      - 'assets/icono-solicitudes-512.png'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar tamaño y formato de los iconos
+        run: |
+          python - <<'PY'
+          import struct
+          for name,size in [('assets/icono-solicitudes-192.png',192),('assets/icono-solicitudes-512.png',512)]:
+              with open(name,'rb') as f:
+                  head=f.read(24)
+              assert head[:8] == b'\x89PNG\r\n\x1a\n', name
+              w,h=struct.unpack('>II',head[16:24])
+              assert (w,h)==(size,size),(name,w,h)
+              print(name,w,h)
+          PY
+      - name: Verificar alcance de la publicación
+        run: node tests/test-icono-solicitudes.js
+      - name: Revisar sintaxis de PowerShell
+        shell: pwsh
+        run: |
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'instalar-icono-solicitudes.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
