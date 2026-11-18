@@ -1,0 +1,18 @@
+const fs=require('fs'),assert=require('assert');
+const ps=fs.readFileSync('publicar-app-correcta.ps1','utf8');
+const actual='AKfycbwyh-a1jGYe0ZpRu9IjImgMwVUoygIeZz0B-C5Cf3MWSS1vyiYCk3r9TgsEvQ_RlQ_y';
+let n=0;const ok=(x,why)=>{assert.ok(x,why);n++};
+ok(ps.includes(actual),'usa implementación confirmada por usuario');
+ok(ps.includes('1BcZCsDSmp-wU4gHPfeA24u7VqzyUxXEnI_9IEzDwew1pqRMXm8b5wV9a'),'proyecto Apps Script correcto');
+ok(ps.includes('clasp clone $scriptId'),'lee el estado actual del proyecto');
+ok(ps.includes('$list.Contains($deploymentId)'),'comprueba implementación existente');
+ok(ps.includes("USUARIOS: ['ID_USUARIO','USUARIO','CONTRASEÑA','NOMBRE'"),'valida estructura actualizada');
+ok(ps.includes('function iniciarSesionSolicitudes('),'valida presencia de login');
+ok(ps.includes('Claves_Visibles_Usuarios.js'),'valida migración cargada');
+ok(ps.includes('clasp deploy -i $deploymentId'),'actualiza MISMO deployment');
+ok(!ps.includes('clasp push'),'NO modifica código');
+ok(!ps.includes('clasp create-deployment'),'NO crea nueva URL');
+ok(!ps.includes('restablecerClavesVisiblesAPPSECRETARIA()'),'NO vuelve a restablecer contraseñas');
+ok(!ps.includes('makeCopy'),'NO toca hoja');
+ok(ps.includes("if ($ok -ne 'PUBLICAR')"),'exige confirmación');
+console.log('OK '+n+' controles: despliegue único sin tocar contraseñas ni base.');
