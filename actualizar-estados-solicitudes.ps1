@@ -33,7 +33,11 @@ function editar(texto,cambios){
   return texto;
 }
 function transformar(html,backend){
-  if(html.includes('id="estados-solicitante"') && backend.includes('function completarRecursosSolicitudes_'))return {html,backend};
+  if(html.includes('id="estados-solicitante"') && backend.includes('function completarRecursosSolicitudes_')){
+    const estilo=/<style id="estados-solicitante">[\s\S]*?<\/style>/;
+    if(!estilo.test(html))throw Error('No se pudo localizar el estilo de Mis solicitudes.');
+    return {html:html.replace(estilo,()=>"<style id=\"estados-solicitante\">\n#requests .pill{display:inline-flex;align-items:center;justify-content:center;text-align:center}\n#requests .sol-revision{background:#fff3cd!important;color:#795000!important;border-color:#ecd389}\n#requests .sol-aceptado{background:#e1f4e8!important;color:#146139!important;border-color:#afddbd}\n#requests .sol-rechazado{background:#fce8e8!important;color:#942a2a!important;border-color:#efbbbb}\n#requests .sol-otro{background:#edf1f4!important;color:#455565!important;border-color:#d1d9df}\n</style>"),backend};
+  }
   return {html:editar(html,[
   [
     "function renderRequests(){",
@@ -49,7 +53,7 @@ function transformar(html,backend){
   ],
   [
     "</head>",
-    "<style id=\"estados-solicitante\">\n#requests .pill{display:inline-flex;align-items:center;justify-content:center;text-align:center}\n#requests .sol-revision{background:#fff3cd;color:#795000;border-color:#ecd389}\n#requests .sol-aceptado{background:#e1f4e8;color:#146139;border-color:#afddbd}\n#requests .sol-rechazado{background:#fce8e8;color:#942a2a;border-color:#efbbbb}\n#requests .sol-otro{background:#edf1f4;color:#455565;border-color:#d1d9df}\n</style>\n</head>"
+    "<style id=\"estados-solicitante\">\n#requests .pill{display:inline-flex;align-items:center;justify-content:center;text-align:center}\n#requests .sol-revision{background:#fff3cd!important;color:#795000!important;border-color:#ecd389}\n#requests .sol-aceptado{background:#e1f4e8!important;color:#146139!important;border-color:#afddbd}\n#requests .sol-rechazado{background:#fce8e8!important;color:#942a2a!important;border-color:#efbbbb}\n#requests .sol-otro{background:#edf1f4!important;color:#455565!important;border-color:#d1d9df}\n</style>\n</head>"
   ]
 ]),backend:editar(backend,[
   [
