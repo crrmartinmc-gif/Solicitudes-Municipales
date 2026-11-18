@@ -1,0 +1,25 @@
+name: Validar publicación app correcta
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'publicar-app-correcta.ps1'
+      - 'tests/test-publicar-app-correcta.js'
+      - '.github/workflows/publicar-app-correcta.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar que solo actualiza el deployment real
+        run: node tests/test-publicar-app-correcta.js
+      - name: Comprobar sintaxis PowerShell
+        shell: pwsh
+        run: |
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'publicar-app-correcta.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
