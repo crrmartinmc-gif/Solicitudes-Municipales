@@ -1,0 +1,31 @@
+name: Validar restablecimiento APPSECRETARIA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/restablecer-claves-visibles.gs'
+      - 'instalar-claves-visibles.ps1'
+      - 'tests/test-claves-visibles.js'
+      - '.github/workflows/claves-visibles.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar sintaxis de la migración
+        run: |
+          cp backend/restablecer-claves-visibles.gs /tmp/restablecer-claves-visibles.js
+          node --check /tmp/restablecer-claves-visibles.js
+          node --check tests/test-claves-visibles.js
+      - name: Verificar seguridad y migración con cuentas simuladas
+        run: node tests/test-claves-visibles.js
+      - name: Verificar sintaxis del instalador de Windows
+        shell: pwsh
+        run: |
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'instalar-claves-visibles.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
