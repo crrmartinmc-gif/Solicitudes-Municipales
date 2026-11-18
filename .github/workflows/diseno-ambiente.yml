@@ -5,6 +5,7 @@ on:
     paths:
       - 'ambiente-lomas-theme.css'
       - 'instalar-diseno-ambiente.ps1'
+      - 'agrandar-logo.ps1'
       - 'tests/test-diseno-ambiente.js'
       - '.github/workflows/diseno-ambiente.yml'
   workflow_dispatch:
@@ -23,4 +24,7 @@ jobs:
         run: |
           $tokens=$null; $errors=$null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'instalar-diseno-ambiente.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'agrandar-logo.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
           if($errors.Count) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
