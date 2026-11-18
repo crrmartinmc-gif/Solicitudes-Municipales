@@ -18,7 +18,7 @@ header{
   gap:18px;flex-wrap:wrap
 }
 header .amb-brand{display:flex;gap:16px;align-items:center;min-width:0;flex:1}
-header .amb-brand-logo{display:block;width:176px;height:54px;max-width:38vw;max-height:none;object-fit:cover;object-position:50% 24%;flex-shrink:0;transform:none;mix-blend-mode:multiply;pointer-events:none}
+header .amb-brand-logo{display:block;width:184px;height:63px;max-width:38vw;max-height:none;object-fit:contain;object-position:left center;flex-shrink:0;transform:none;mix-blend-mode:normal;pointer-events:none}
 header .amb-brand-copy{border-left:1px solid #cce5d4;padding-left:16px}
 header h1{font-size:clamp(17px,2vw,23px)!important;color:#0c5238!important;letter-spacing:-.45px;line-height:1.2}
 header .muted{font-size:11px!important;letter-spacing:.025em;color:#557365!important;margin-top:5px}
@@ -142,7 +142,7 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
 @media(max-width:700px){
   header{padding:12px 16px!important;align-items:center!important;min-height:80px}
   header .amb-brand{gap:10px}
-  header .amb-brand-logo{width:132px;height:42px;max-width:35vw;object-fit:cover;object-position:50% 24%;transform:none}
+  header .amb-brand-logo{width:132px;height:45px;max-width:35vw;object-fit:contain;object-position:left center;transform:none}
   header .amb-brand-copy{padding-left:11px}
   header h1{font-size:15px!important}
   header .muted{font-size:10px!important}
